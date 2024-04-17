@@ -11,6 +11,18 @@ M.ui = {
 		Comment = { italic = true },
 		["@comment"] = { italic = true },
 	},
+
+    tabufline = {
+        enabled = false,
+    },
+
+    telescope = {
+        style = "bordered",
+    },
+
+    statusline = {
+        theme = "minimal",
+    },
 }
 
 return M
