@@ -35,14 +35,13 @@ return {
   {
     "hrsh7th/nvim-cmp",
     dependencies = {
-      { "roobert/tailwindcss-colorizer-cmp.nvim", config = true },
+      "luckasRanarison/tailwind-tools.nvim",
+      "onsails/lspkind-nvim",
     },
     opts = function(_, opts)
-      local format_kinds = opts.formatting.format
-      opts.formatting.format = function(entry, item)
-        format_kinds(entry, item) -- add icons
-        return require("tailwindcss-colorizer-cmp").formatter(entry, item)
-      end
+        opts.formatting.format = function(entry, item)
+            return require('lspkind').cmp_format({ before = require("tailwind-tools.cmp").lspkind_format })(entry, item)
+        end
     end,
   },
   {
@@ -62,6 +61,15 @@ return {
   },
   {
     "luckasRanarison/tailwind-tools.nvim",
+    ft = {
+      "html",
+      "css",
+      "scss",
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+    },
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       document_color = {
