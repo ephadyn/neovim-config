@@ -6,7 +6,7 @@ vim.opt.relativenumber = false
 vim.opt.conceallevel = 2
 
 if vim.g.neovide then
-  vim.o.guifont = "FiraCode Nerd Font:h13"
+  vim.o.guifont = "VictorMono Nerd Font:h13"
   vim.opt.linespace = 1
   vim.g.neovide_padding_top = 20
   vim.g.neovide_padding_bottom = 20
