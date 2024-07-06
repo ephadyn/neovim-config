@@ -1,9 +1,25 @@
 return {
-  { "ms-jpq/coq_nvim" },
   {
     "neovim/nvim-lspconfig",
     config = function()
       require "configs.lspconfig"
+
+      vim.diagnostic.config {
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN] = " ",
+            [vim.diagnostic.severity.HINT] = " ",
+            [vim.diagnostic.severity.INFO] = " ",
+          },
+        },
+        severity_sort = true,
+        virtual_text = {
+          spacing = 4,
+          source = "if_many",
+          prefix = "●",
+        },
+      }
     end,
   },
   -- override plugin configs
@@ -34,43 +50,39 @@ return {
         -- development
         "azure-pipelines-language-server",
         "omnisharp",
+        "netcoredbg",
         "csharpier",
         "dockerfile-language-server",
         "docker-compose-language-service",
         "terraform-lsp",
         "marksman",
-        -- "haskell-language-server",
+        "markdownlint",
         "rnix-lsp",
         "tree-sitter-cli",
       },
     },
   },
   {
-    "rmagatti/goto-preview",
-    config = function()
-      require("goto-preview").setup {
-        width = 120, -- Width of the floating window
-        height = 25, -- Height of the floating window
-        default_mappings = true, -- Bind default mappings
-        debug = false, -- Print debug information
-        opacity = nil, -- 0-100 opacity level of the floating window where 100 is fully transparent.
-        post_open_hook = nil, -- A function taking two arguments, a buffer and a window to be ran as a hook.
-        -- You can use "default_mappings = true" setup option
-        -- Or explicitly set keybindings
-        -- vim.cmd("nnoremap gpd <cmd>lua require('goto-preview').goto_preview_definition()<CR>")
-        -- vim.cmd("nnoremap gpi <cmd>lua require('goto-preview').goto_preview_implementation()<CR>")
-        -- vim.cmd("nnoremap gP <cmd>lua require('goto-preview').close_all_win()<CR>")
+    "nvimtools/none-ls.nvim",
+    opts = function(_, opts)
+      local nls = require "null-ls"
+      opts.sources = opts.sources or {}
+
+      nls.setup {
+        sources = {
+          nls.builtins.code_actions.gitrebase,
+          nls.builtins.code_actions.gitsigns,
+          nls.builtins.code_actions.refactoring,
+          nls.builtins.formatting.nixpkgs_fmt,
+          nls.builtins.formatting.gofmt,
+          nls.builtins.formatting.goimports,
+          nls.builtins.formatting.prettier,
+          nls.builtins.formatting.stylua,
+          nls.builtins.diagnostics.markdownlint,
+          nls.builtins.formatting.terraform_fmt,
+          nls.builtins.diagnostics.terraform_validate,
+        },
       }
     end,
-  },
-  {
-    "SmiteshP/nvim-navbuddy",
-    dependencies = {
-      {
-        "SmiteshP/nvim-navic",
-        "MunifTanjim/nui.nvim",
-      },
-    },
-    opts = { lsp = { auto_attach = true } },
   },
 }

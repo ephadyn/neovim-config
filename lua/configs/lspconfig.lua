@@ -2,8 +2,6 @@ local on_attach = require("nvchad.configs.lspconfig").on_attach
 local capabilities = require("nvchad.configs.lspconfig").capabilities
 
 local lspconfig = require "lspconfig"
-local coq = require "coq"
-
 -- if you just want default config for the servers then put them in a table
 local servers = {
   "html",
@@ -23,20 +21,53 @@ local servers = {
 }
 
 for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup(coq.lsp_ensure_capabilities {
+  lspconfig[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
-  })
+  }
 end
 
-lspconfig["omnisharp"].setup(coq.lsp_ensure_capabilities {
+lspconfig["omnisharp"].setup {
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = { "omnisharp", "--languageserver" },
-})
+  handlers = {
+    ["textDocument/definition"] = function(...)
+      return require("omnisharp_extended").handler(...)
+    end,
+  },
+  keys = {
+    {
+      "gd",
+      function()
+        require("omnisharp_extended").telescope_lsp_definitions()
+      end,
+      desc = "Goto Definition",
+    },
+  },
+  enable_roslyn_analyzers = true,
+  organize_imports_on_format = true,
+  enable_import_completion = true,
+}
+
+lspconfig["jsonls"].setup {
+  -- lazy-load schemastore when needed
+  on_new_config = function(new_config)
+    new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+    vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+  end,
+  settings = {
+    json = {
+      format = {
+        enable = true,
+      },
+      validate = { enable = true },
+    },
+  },
+}
 
 -- custom config for eslint
-lspconfig["eslint"].setup(coq.lsp_ensure_capabilities {
+lspconfig["eslint"].setup {
   on_attach = function(client)
     if client.name == "eslint" then
       client.server_capabilities.documentFormattingProvider = true
@@ -50,4 +81,5 @@ lspconfig["eslint"].setup(coq.lsp_ensure_capabilities {
   },
   root_dir = lspconfig.util.root_pattern ".git",
   workingDirectory = { mode = "auto" },
-})
+}
+
