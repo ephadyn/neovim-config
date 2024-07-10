@@ -13,7 +13,6 @@ return {
         "gitignore",
         "gitcommit",
         "graphql",
-        "haskell",
         "javascript",
         "json",
         "json5",

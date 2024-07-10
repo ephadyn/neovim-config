@@ -23,6 +23,8 @@ M.ui = {
   cmp = {
     style = "flat_light", -- default/flat_light/flat_dark/atom/atom_colored
   },
+
+  lsp = { signature = true },
 }
 
 return M

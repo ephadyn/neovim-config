@@ -7,8 +7,9 @@ local servers = {
   "html",
   "cssls",
   "css_variables",
+  "cssls",
   "cssmodules_ls",
-  "tsserver",
+  "vtsls",
   "omnisharp",
   "tailwindcss",
   "dockerls",
@@ -18,6 +19,9 @@ local servers = {
   "marksman",
   "hls",
   "lua_ls",
+  "gopls",
+  "graphql",
+  "postgres_lsp",
 }
 
 for _, lsp in ipairs(servers) do
@@ -82,4 +86,3 @@ lspconfig["eslint"].setup {
   root_dir = lspconfig.util.root_pattern ".git",
   workingDirectory = { mode = "auto" },
 }
-

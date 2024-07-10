@@ -22,6 +22,7 @@ return {
       }
     end,
   },
+
   -- override plugin configs
   {
     "williamboman/mason.nvim",
@@ -36,8 +37,7 @@ return {
         "css-variables-language-server",
         "cssmodules-language-server",
         "html-lsp",
-        "typescript-language-server",
-        "deno",
+        "vtsls",
         "prettier",
         "json-lsp",
         "eslint-lsp",
@@ -54,7 +54,7 @@ return {
         "csharpier",
         "dockerfile-language-server",
         "docker-compose-language-service",
-        "terraform-lsp",
+        "terraform-ls",
         "marksman",
         "markdownlint",
         "rnix-lsp",
@@ -84,5 +84,25 @@ return {
         },
       }
     end,
+  },
+  {
+    "nvimdev/lspsaga.nvim",
+    config = function()
+      require("lspsaga").setup {
+        lightbulb = {
+          enable = false,
+        },
+        ui = {
+          border = "solid",
+        },
+      }
+    end,
+    keys = {
+      { "<leader>co", "<cmd>Lspsaga outline<cr>", desc = "Code outline" },
+    },
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter", -- optional
+      "nvim-tree/nvim-web-devicons", -- optional
+    },
   },
 }
